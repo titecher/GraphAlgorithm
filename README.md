@@ -43,6 +43,7 @@ git clone https://github.com/titecher/GraphAlgorithm/
 
 For example, if you apply depth first search algorithm to your network file, [filename] with numbered nodes in edge-list format.
 'Depth' command with [start node No.] and [input filename] sorts the list and returns the order of visited nodes.
+
 例えば、幅優先探索を行うのであれば、起点となるノード番号とファイル名を以下のように引数として与えてください。ファイルは、番号化されたエッジリストタイプのファイルを読み込めます。
 ```
 Depth [start node No.] [filename]
