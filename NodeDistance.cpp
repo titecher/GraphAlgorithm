@@ -25,26 +25,29 @@ bool pairCompare1st(const pair<int, int> &firstElof, const pair<int, int> &secon
     }
 }
 
-void DFS(int root){
-    int cnt=0;
+void Dist(int root){
+    //queueで作る
+    int cnt = 1;
     vector<pair<int, int>>::iterator line_start, line_end;
-
+    //queue<int, vector<int>> bque;
+    queue<int> bque;
+    bque.push(root);
     int *Visited = new int[Node.size()]();
-    stack<int> dstack;
-    dstack.push(root);
     Visited[root] = 1;
-    while (dstack.size() > 0)
+    while (bque.size() > 0)
     {
-        cout << dstack.top() << " " << cnt << endl;
-        cnt++;
-        line_start = lower_bound(Link.begin(), Link.end(), make_pair(dstack.top(), 0), pairCompare1st);
-        line_end = lower_bound(Link.begin(), Link.end(), make_pair(dstack.top() + 1, 0), pairCompare1st);
-        dstack.pop();
+        //cout << dstack.size() << endl; 
+        cout << bque.front() << " " << Visited[bque.front()] - 1 << endl;
+        line_start = lower_bound(Link.begin(), Link.end(), make_pair(bque.front(), 0), pairCompare1st);
+        line_end = lower_bound(Link.begin(), Link.end(), make_pair(bque.front() + 1, 0), pairCompare1st);
+        bque.pop();
+        
         for (int i = line_start - Link.begin(); i < line_end - Link.begin(); i++)
         {
-            if (Visited[Link[i].second] == 0){
-                dstack.push(Link[i].second);
-                Visited[Link[i].second] = 1;
+            if (Visited[Link[i].second] == 0)
+            {
+                bque.push(Link[i].second);
+                Visited[Link[i].second] = Visited[Link[i].first]+1;
             }
         }
     }
@@ -74,5 +77,5 @@ int main(int argc, char *argv[])
     Node.erase(unique(Node.begin(), Node.end()), Node.end());
     //Node is a sorted list of the numbered nodes 
 
-    DFS(RootNode);
+    Dist(RootNode);
 }
