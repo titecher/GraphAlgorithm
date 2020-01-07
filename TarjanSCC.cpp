@@ -10,32 +10,19 @@
 #include <string.h>
 #include <stack>
 #include <queue>
+#include "Common.cpp"
 
 using namespace std;
 
 vector<pair<int, int>> Link;
-vector<int> Node;
-
-bool pairCompare1st(const pair<int, int> &firstElof, const pair<int, int> &secondElof)
-{
-    if (firstElof.first != secondElof.first){
-        return firstElof.first < secondElof.first;
-    }else{
-        return firstElof.second < secondElof.second;
-    }
-}
-/////
-/////
-/////このしたバグ
-/////ノード番号に1000があっても
-/////size分しか確保されない。
+vector<pair<int,string>> Node;
 
 int ind = 1;
 int deep=0;
-int *D = new int[Node.size()]();
-int *low = new int[Node.size()]();
-int *stin = new int[Node.size()]();
-int *scc = new int[Node.size()]();
+int *D;
+int *low;
+int *stin;
+int *scc;
 stack<int> tar;
 
 void Tarjan(int root)
@@ -50,11 +37,9 @@ void Tarjan(int root)
 
     line_start = lower_bound(Link.begin(), Link.end(), make_pair(tar.top(), 0), pairCompare1st);
     line_end = lower_bound(Link.begin(), Link.end(), make_pair(tar.top() + 1, 0), pairCompare1st);
-    cout << line_start - Link.begin() << " " << line_end - Link.begin() <<endl;
     for (int i = line_start - Link.begin(); i < line_end - Link.begin(); i++)
     {
         if (D[Link[i].second] < 1){
-            cout << Link[i].first << " " << Link[i].second << endl;
             Tarjan(Link[i].second);
             low[root] = min(low[root], low[Link[i].second]);
         }
@@ -67,57 +52,43 @@ void Tarjan(int root)
     {
         deep++;
         while (D[tar.top()] >= D[root]){
-            cout << tar.top() << " " << D[tar.top()] << "a" << D[root] <<" " << root << endl;
             scc[tar.top()] = deep;
             stin[tar.top()] = 0;
             cout << tar.top() << "d" << deep << endl;
             if(D[tar.top()] > D[root]){
-                cout << tar.top() <<" 1popsuru"<< endl;
                 tar.pop();
             }else{
                 if(tar.top()==root){
-                    cout << tar.top() <<" 2popsuru"<< endl;
                     tar.pop();
                 }
                 break;
             }
         }
-        cout << "aaa" << endl;
     }
 }
 
 int main(int argc, char *argv[]){
     //Start DFS from this Node.
-    int RootNode=atoi(argv[1]);
+ 
+    ifstream fin(argv[1]);
+    tie(Node, Link)=list2list(fin);
+    fin.close();
 
-    //Reading two-line file 
-    FILE *fpr = fopen(argv[2], "r" );
-    int a,b;
-    while(fscanf(fpr, "%d %d", &a, &b) != EOF) {
-        Link.push_back(make_pair(a,b));
-	}
-    fclose(fpr);
-
-    //Define node list
-    for (int i = 0; i < Link.size(); i++)
-    {
-        Node.push_back(Link[i].first);
-        Node.push_back(Link[i].second);
+    D = new int[Node.size()]();
+    low = new int[Node.size()]();
+    stin = new int[Node.size()]();
+    scc = new int[Node.size()]();
+    for(auto i:Node){
+        if(D[i.first]==0){
+            cout << i.first << endl;
+            Tarjan(i.first);
+        }
     }
-    sort(Node.begin(), Node.end());
-    Node.erase(unique(Node.begin(), Node.end()), Node.end());
-    //Node is a sorted list of the numbered nodes 
+    //出力の数値を制御する
 
-    // for(int i:Node){
-    //     cout << i << endl;
-    // }
-    Tarjan(RootNode);
-
-    cout << "sss" << endl;
 
     delete [] D;
     delete [] low;
     delete [] stin;
     delete [] scc;
-    cout << "sss" << endl;
 }
