@@ -1,7 +1,7 @@
 Basic tools for Network Analysis # Not Completed.
 ===================
 
-Prepared C++ scripts and Executable files for analysing the network data. 
+I prepared C++ scripts and executable files for analysing the network data. 
 Currently, the files are under construction and listed separatedly.
 The following algorithms will be implemented and summerized into a library. 
 
@@ -10,7 +10,7 @@ C++でネットワーク解析をするときに必要になる基礎アルゴ�
 
 # Description
 Data of the relation is usually described as a pair of components.
-This type of data whose relation between the components is nature is categorized into network(graph).
+This type of data is categorized into network(graph). 
 To analyze the network data, we need some tricky algorithms to obtain feature values.
 This repo provides you scripts for basic calculation tools of Network Analysis.
 
@@ -51,7 +51,7 @@ Depth [start node No.] [filename]
 
 You can build the source.  
 ```
-g++ -std=gnu++11 -lm -o Depth DepthFirstSearch.cpp
+g++ -std=gnu++17 -lm -o Depth DepthFirstSearch.cpp
 ```
 
 # Author
